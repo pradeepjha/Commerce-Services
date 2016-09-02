@@ -1,0 +1,69 @@
+
+    <html>
+      <head>
+        <title>devapp check</title>
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+        <script>
+
+$(function() {
+console.log('test');
+              $("form").submit(function(){
+                        var oid = $('#nid').val();
+        				var status = $('#status').val();
+        				var type = "put";
+        				var url = "http://localhost/bmhdev/api/order/" + encodeURIComponent(oid) + ".json";
+      				var data = {'status': status };
+      				submit_me(type,data,url);
+              });
+
+  function submit_me(type,data,url) {
+    try {
+				 $.ajax({
+				     url: url,
+				     type: type,
+				     data: data,
+				     dataType: 'json',
+				     beforeSend: function (request) {
+              // Access-Control-Allow-Headers: Content-Type;
+			 request.setRequestHeader('Content-Type','application/json');
+               request.setRequestHeader("X-CSRF-Token", 'qv75P6f5ZndWf9IZzsXJTd5kINubDGD9I6mfVMRnZtI');
+				     },
+				     error: function(XMLHttpRequest, textStatus, errorThrown) {
+				       //alert('page_login_submit - failed to login');
+				       console.log(JSON.stringify(XMLHttpRequest));
+				       console.log(JSON.stri54ngify(textStatus));
+				       console.log(JSON.stringify(errorThrown));
+				     },
+				      success: function (data) {
+  					     if (data.sessid){
+  						      var sessid = data.sessid;
+  						      var session_name = data.session_name;
+  						      var token = data.token;
+  						      jQuery.cookie("token",'qv75P6f5ZndWf9IZzsXJTd5kINubDGD9I6mfVMRnZtI');
+  				 	 	 }
+				 	 	 console.log(data);
+
+				     }
+				 });
+			}
+			catch (error) { console.log(error) }
+			return false;
+
+    }
+
+});
+
+
+
+        </script>
+      </head>
+      <body>
+        <form method="post">
+        Order Id:<input type="text" name="nid" id="nid"> <br>
+        Status: <input type="text" name="body" id="ubody"><br>
+        <input type="submit" value="Submit" id="login">
+      </form>
+
+      </body>
+    </html></html>

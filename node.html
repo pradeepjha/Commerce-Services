@@ -1,0 +1,75 @@
+
+    <html>
+      <head>
+        <title>devapp check</title>
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+        <script>
+
+$(function() {
+console.log('test');
+              $("form").submit(function(){
+      			 	var url = "http://localhost/bmhdev/api/node.json";
+      				var title = $('#title').val();
+      				var body = $('#body').val();
+      				var type = "post";
+      				var data = 'node[type]=page&node[title]=' + encodeURIComponent(title) +
+      				           '&node[language]=und&node[body][und][0][value]=' + encodeURIComponent(body);
+          //   var data = {"node":{
+          //    "type":"page",
+          //    "title":title,
+          //    "language":"und",
+          //    "body":{"und":{"0":{"value": body}}}
+          //  }};
+      				submit_me(type,data,url);
+              });
+
+  function submit_me(type,data,url) {
+    try {
+				 $.ajax({
+				     url: url,
+				     type: type,
+				     data: data,
+				     dataType: 'json',
+				     beforeSend: function (request) {
+               request.setRequestHeader("X-CSRF-Token", 'cevB12H63qIvvSbheHfpkVhOTigKKX-YLvLSEkE37Q8');
+               request.setRequestHeader('Content-Type','application/json');
+				     },
+				     error: function(XMLHttpRequest, textStatus, errorThrown) {
+				       //alert('page_login_submit - failed to login');
+				       console.log(JSON.stringify(XMLHttpRequest));
+				       console.log(JSON.stri54ngify(textStatus));
+				       console.log(JSON.stringify(errorThrown));
+				     },
+				      success: function (data) {
+  					     if (data.sessid){
+  						      var sessid = data.sessid;
+  						      var session_name = data.session_name;
+  						      var token = data.token;
+  						      jQuery.cookie("token",'cevB12H63qIvvSbheHfpkVhOTigKKX-YLvLSEkE37Q8');
+  				 	 	 }
+				 	 	 console.log(data);
+
+				     }
+				 });
+			}
+			catch (error) { console.log(error) }
+			return false;
+
+    }
+
+});
+
+
+
+        </script>
+      </head>
+      <body>
+        <form method="post">
+        Title: <input type="text" name="title" id="title"><br>
+        Body: <input type="text" name="body" id="body"><br>
+        <input type="submit" value="Submit" id="login">
+      </form>
+
+      </body>
+    </html></html>

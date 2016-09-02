@@ -1,0 +1,72 @@
+
+    <html>
+      <head>
+        <title>devapp check</title>
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+        <script>
+
+$(function() {
+console.log('test');
+              $("form").submit(function(){
+                var title = $('#utitle').val();
+        				var body = $('#ubody').val();
+        				var nid = $('#nid').val();
+        				var type = "put";
+        				var url = "http://localhost/devapp/api/node/" + encodeURIComponent(nid) + ".json";
+      				var data = 'node[type]=page&node[title]=' + encodeURIComponent(title) +
+      				           '&node[language]=und&node[body][und][0][value]=' + encodeURIComponent(body);
+      				submit_me(type,data,url);
+              });
+
+  function submit_me(type,data,url) {
+    try {
+				 $.ajax({
+				     url: url,
+				     type: type,
+				     data: data,
+				     dataType: 'json',
+				     beforeSend: function (request) {
+              // Access-Control-Allow-Headers: Content-Type;
+				      // request.setRequestHeader('Content-Type','application/json');
+               request.setRequestHeader("X-CSRF-Token", 'ovqJHRWHLUb1WQvO3ZQBrQt8HyY53ZVob1LXB1tVh2Q');
+				     },
+				     error: function(XMLHttpRequest, textStatus, errorThrown) {
+				       //alert('page_login_submit - failed to login');
+				       console.log(JSON.stringify(XMLHttpRequest));
+				       console.log(JSON.stri54ngify(textStatus));
+				       console.log(JSON.stringify(errorThrown));
+				     },
+				      success: function (data) {
+  					     if (data.sessid){
+  						      var sessid = data.sessid;
+  						      var session_name = data.session_name;
+  						      var token = data.token;
+  						      jQuery.cookie("token",'ovqJHRWHLUb1WQvO3ZQBrQt8HyY53ZVob1LXB1tVh2Q');
+  				 	 	 }
+				 	 	 console.log(data);
+
+				     }
+				 });
+			}
+			catch (error) { console.log(error) }
+			return false;
+
+    }
+
+});
+
+
+
+        </script>
+      </head>
+      <body>
+        <form method="post">
+        Nid:<input type="text" name="nid" id="nid"> <br>
+        Title: <input type="text" name="title" id="utitle"><br>
+        Body: <input type="text" name="body" id="ubody"><br>
+        <input type="submit" value="Submit" id="login">
+      </form>
+
+      </body>
+    </html></html>
